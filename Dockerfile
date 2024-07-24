@@ -1,40 +1,20 @@
 # Dockerfile
 
-# Usar una imagen base oficial de Python
+# Use an official Python base image
 FROM python:3.9-slim AS pizzaclick
 
-# Establecer el directorio de trabajo en el contenedor
+# Set the working directory in the container
 WORKDIR /app
 
-# Copiar el contenido del proyecto al directorio de trabajo
+# Copy the project contents to the working directory
 COPY apps/pizzaclick .
 
-# Copiar los archivos de requerimientos y luego instalarlos
+# Copy the requirements files and then install them
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
-# Exponer el puerto que usará la aplicación
+# Expose the port that the application will use
 EXPOSE 8000
 
-# Comando para ejecutar la aplicación
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-
-
-# Usar una imagen base oficial de Python
-FROM python:3.9-slim AS pizzatable
-
-# Establecer el directorio de trabajo en el contenedor
-WORKDIR /app
-
-# Copiar los archivos de requerimientos y luego instalarlos
-COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
-
-# Copiar el contenido del proyecto al directorio de trabajo
-COPY apps/pizzatable .
-
-# Exponer el puerto que usará la aplicación
-EXPOSE 8000
-
-# Comando para ejecutar la aplicación
+# Command to run the application
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

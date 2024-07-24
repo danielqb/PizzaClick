@@ -1,0 +1,28 @@
+<!-- apps/pizzatable/templates/pizzatable/orders.html -->
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pizza Orders</title>
+</head>
+<body>
+	<h1>Pizza Orders</h1>
+	<table border="1">
+		<thead>
+			<tr>
+				<th>Pizza Type</th>
+				<th>Comments</th>
+				<th>Created At</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for order in orders %}
+			<tr>
+				<td>{{ order.pizza_type }}</td>
+				<td>{{ order.comments }}</td>
+				<td>{{ order.created_at }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</body>
+</html>
