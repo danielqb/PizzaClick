@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pizzaclick
+spec:
+  replicas: {{ .Values.pizzaclick.replicaCount }}
+  selector:
+    matchLabels:
+      app: pizzaclick
+  template:
+    metadata:
+      labels:
+        app: pizzaclick
+    spec:
+      containers:
+      - name: pizzaclick
+        image: "{{ .Values.pizzaclick.image.repository }}:{{ .Values.pizzaclick.image.tag }}"
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_HOST
+          value: "{{ .Values.postgresql.service.name }}"
+        - name: DATABASE_PORT
+          value: "{{ .Values.postgresql.service.port }}"
+        - name: DATABASE_NAME
+          value: "{{ .Values.postgresql.database }}"
+        - name: DATABASE_USER
+          value: "{{ .Values.postgresql.username }}"
+        - name: DATABASE_PASSWORD
+          value: "{{ .Values.postgresql.password }}"

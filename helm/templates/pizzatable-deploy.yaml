@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pizzatable
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: pizzatable
+  template:
+    metadata:
+      labels:
+        app: pizzatable
+    spec:
+      containers:
+      - name: pizzatable
+        image: "{{ .Values.pizzatable.image.repository }}:{{ .Values.pizzatable.image.tag }}"
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_HOST
+          value: "postgres-service"
+        - name: DATABASE_PORT
+          value: "5432"
+        - name: DATABASE_NAME
+          value: "{{ .Values.postgresql.database }}"
+        - name: DATABASE_USER
+          value: "{{ .Values.postgresql.username }}"
+        - name: DATABASE_PASSWORD
+          value: "{{ .Values.postgresql.password }}"
