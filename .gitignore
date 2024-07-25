@@ -1,2 +1,11 @@
 certs/
 tmp/
+# python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyz
+pip-wheel-metadata/
+# Ignore Helm Chart packages
+*.tgz

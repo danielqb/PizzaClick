@@ -1,0 +1,74 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main", "dev", "actions"]
+  pull_request:
+    branches: [ "main", "dev", "actions"]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pylint
+    - name: Analysing the code with pylint
+      run: |
+        pylint $(git ls-files '*.py')
+    # Run linting
+    - name: Run Linting
+      run: |
+        pip install flake8
+        flake8 .
+
+    # Run tests
+    # - name: Run Tests
+    #   run: |
+    #     pip install -r requirements.txt
+    #     pytest
+
+    - name: Build the Docker image
+      run: docker build --file Dockerfile --target danielqb/pizzaclick -t pizza-click:${{ github.sha }} .
+    # Scan Docker image for vulnerabilities
+    - name: Scan Docker image for vulnerabilities
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: pizza-click:${{ github.sha }}
+
+    - name: Build Helm packed
+      run: helm package helm/
+    - name: Create Git Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.sha }}
+        release_name: Release ${{ github.sha }}
+        draft: false
+        prerelease: false
+        files: |
+          ./helm/*.tgz
+
+
+    # Log in to Docker Hub
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    # Push Docker image to registry
+    - name: Push Docker image to registry
+      run: docker push pizza-click:${{ github.sha }}
