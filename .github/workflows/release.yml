@@ -83,29 +83,6 @@ jobs:
     #     asset_name: pizzaclick-${{ env.VERSION }}.tgz
     #     asset_content_type: application/gzip
 
-    - name: Create Release
-      # id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
-    - name: Upload Release Asset
-      uses: sekwah41/upload-release-assets@v1.1.1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-        asset_path: ./my-artifact.zip
-        asset_name: my-artifact.zip
-        asset_content_type: application/zip
-      # if: steps.create_release.conclusion == 'success'
-
-
-
     # Log in to Docker Hub
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
