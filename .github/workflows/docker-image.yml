@@ -63,7 +63,7 @@ jobs:
         release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
-        files: *.tgz
+        files: "*.tgz"
         body: |
           ${{ github.event.head_commit.message }}
 
