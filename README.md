@@ -3,7 +3,7 @@
 PizzaClick is an intuitive and user-friendly application that simplifies the pizza ordering process. It allows users to fully customize their orders through a friendly interface. PizzaClick makes the pizza ordering experience efficient and enjoyable.
 
 [![CodeQL](https://github.com/danielqb/PizzaClick/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/danielqb/PizzaClick/actions/workflows/github-code-scanning/codeql)
-[![.github/workflows/docker-image.yml](https://github.com/danielqb/PizzaClick/actions/workflows/docker-image.yml/badge.svg)](https://github.com/danielqb/PizzaClick/actions/workflows/docker-image.yml)
+[![Docker Image CI](https://github.com/danielqb/PizzaClick/actions/workflows/release.yml/badge.svg)](https://github.com/danielqb/PizzaClick/actions/workflows/release.yml)
 
 ## Table of Contents
 
