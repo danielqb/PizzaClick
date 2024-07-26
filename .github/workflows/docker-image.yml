@@ -54,18 +54,18 @@ jobs:
       # Build Helm packed
     - name: Build Helm packed
       run: helm package helm/
-    - name: Create Git Release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
-        files: "*.tgz"
-        body: |
-          ${{ github.event.head_commit.message }}
+    # - name: Create Git Release
+    #   uses: actions/create-release@v1
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     tag_name: ${{ github.ref }}
+    #     release_name: Release ${{ github.ref }}
+    #     draft: false
+    #     prerelease: false
+    #     files: "*.tgz"
+    #     body: |
+    #       ${{ github.event.head_commit.message }}
 
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
@@ -73,7 +73,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./helm/*.tgz
+        asset_path: *.tgz
         asset_name: pizzaclick-0.1.0.tgz
         asset_content_type: application/gzip
 
