@@ -41,7 +41,7 @@ jobs:
     #     pip install -r requirements.txt
     #     pytest
 
-    # Build Docker image
+# Build Docker image
     - name: Build the Docker image
       run: docker build --file Dockerfile -t pizza-click:${{ github.sha }} .
 
@@ -51,21 +51,21 @@ jobs:
       with:
         image-ref: pizza-click:${{ github.sha }}
       
-      # Build Helm packed
+    # Build Helm packed
     - name: Build Helm packed
       run: helm package helm/
-    # - name: Create Git Release
-    #   uses: actions/create-release@v1
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   with:
-    #     tag_name: ${{ github.ref }}
-    #     release_name: Release ${{ github.ref }}
-    #     draft: false
-    #     prerelease: false
-    #     files: "*.tgz"
-    #     body: |
-    #       ${{ github.event.head_commit.message }}
+      
+    - name: Create Git Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: "Commit message: ${{ github.event.head_commit.message }}"
+        draft: false
+        prerelease: false
 
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
