@@ -59,13 +59,23 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.sha }}
-        release_name: Release ${{ github.sha }}
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
-        files: |
-          ./helm/*.tgz
+        files: *.tgz
+        body: |
+          ${{ github.event.head_commit.message }}
 
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./helm/*.tgz
+        asset_name: pizzaclick-0.1.0.tgz
+        asset_content_type: application/gzip
 
     # Log in to Docker Hub
     - name: Log in to Docker Hub
