@@ -9,3 +9,4 @@ tmp/
 pip-wheel-metadata/
 # Ignore Helm Chart packages
 *.tgz
+.gitconfig
