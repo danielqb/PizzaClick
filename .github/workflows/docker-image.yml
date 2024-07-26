@@ -14,7 +14,8 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.8", "3.9", "3.10"]
-
+    
+    # Run pylint analysis
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
@@ -28,7 +29,7 @@ jobs:
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py')
-    # Run linting
+    # Run flake8 linting analysis
     - name: Run Linting
       run: |
         pip install flake8
@@ -40,14 +41,17 @@ jobs:
     #     pip install -r requirements.txt
     #     pytest
 
+    # Build Docker image
     - name: Build the Docker image
-      run: docker build --file Dockerfile --target danielqb/pizzaclick -t pizza-click:${{ github.sha }} .
+      run: docker build --file Dockerfile -t pizza-click:${{ github.sha }} .
+
     # Scan Docker image for vulnerabilities
     - name: Scan Docker image for vulnerabilities
       uses: aquasecurity/trivy-action@master
       with:
         image-ref: pizza-click:${{ github.sha }}
-
+      
+      # Build Helm packed
     - name: Build Helm packed
       run: helm package helm/
     - name: Create Git Release
